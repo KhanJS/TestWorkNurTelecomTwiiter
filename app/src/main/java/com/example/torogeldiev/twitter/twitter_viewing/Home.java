@@ -45,7 +45,7 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
     private RecyclerAdapter adapter;
     String authorization = "OAuth oauth_consumer_key=\"W7bD0tZnCjffMetkVe5M5dH4C\", oauth_token=\"961630064285798400-XrRDXLxftchx1QvXSmvobNjfD4d4NyL\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1518164753\", oauth_nonce=\"5eCW3lTkCSD\", oauth_version=\"1.0\", oauth_signature=\"Yga%2BXT%2B698BUW%2Fuh7rxXWkV6GGA%3D\"";
 //    String authorization;
-    String a = "OAuth oauth_consumer_key=\"W7bD0tZnCjffMetkVe5M5dH4C\", oauth_token=\"961630064285798400-XrRDXLxftchx1QvXSmvobNjfD4d4NyL\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1518166829\", oauth_nonce=\"IeXSOiownXT\", oauth_version=\"1.0\", oauth_signature=\"T%2FcqyzTXOXlhivzYK%2F3VtLThiZk%3D\"";
+//    String a = "OAuth oauth_consumer_key=\"W7bD0tZnCjffMetkVe5M5dH4C\", oauth_token=\"961630064285798400-XrRDXLxftchx1QvXSmvobNjfD4d4NyL\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1518166829\", oauth_nonce=\"IeXSOiownXT\", oauth_version=\"1.0\", oauth_signature=\"T%2FcqyzTXOXlhivzYK%2F3VtLThiZk%3D\"";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +62,6 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
         token = getIntent().getExtras().getString("userToken");
         sekret = getIntent().getExtras().getString("userTokenSekret");
 
-
 //        authorization = "OAuth oauth_consumer_key="+getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY)+", oauth_token="+ token +", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp="+authSeconds+"oauth_nonce=\"5eCW3lTkCSD\"";
 
         presenter = new HomePresenter(this, this);
@@ -71,19 +70,19 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
 
         //Функция для авто обновления, период 7 сек.
 
-//        Timer repeatTask = new Timer();
-//        repeatTask.scheduleAtFixedRate(new TimerTask() {
-//
-//            @Override
-//            public void run() {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        functionFroGetListData();
-//                    }
-//                });
-//            }
-//        }, 0, 5000);
+        Timer repeatTask = new Timer();
+        repeatTask.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        functionFroGetListData();
+                    }
+                });
+            }
+        }, 0, 60000);
 
     }
 
@@ -113,7 +112,7 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
     void send() {
         if (!text.getText().equals("") && text.getText() != null) {
             String texts = text.getText().toString();
-            presenter.sendMessage(a, texts);
+            presenter.sendMessage(authorization, texts);
         } else {
             Toast.makeText(this, "Поле для твита пустое!", Toast.LENGTH_SHORT).show();
         }
