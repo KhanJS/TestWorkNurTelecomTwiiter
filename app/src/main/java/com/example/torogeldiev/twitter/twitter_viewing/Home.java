@@ -5,6 +5,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,14 +17,20 @@ import com.example.torogeldiev.twitter.adapter.RecyclerAdapter;
 import com.example.torogeldiev.twitter.model.GetListTwiter;
 import com.squareup.picasso.Picasso;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.media.tv.TvContract.Programs.Genres.encode;
 
 public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -62,14 +70,14 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
         token = getIntent().getExtras().getString("userToken");
         sekret = getIntent().getExtras().getString("userTokenSekret");
 
-//        authorization = "OAuth oauth_consumer_key="+getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY)+", oauth_token="+ token +", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp="+authSeconds+"oauth_nonce=\"5eCW3lTkCSD\"";
+
+//        authorization = "OAuth oauth_consumer_key="+getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY)+", oauth_token="+ token +", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp="+authSeconds+", oauth_nonce="+getHash()+", oauth_version=\"1.0\", "+ generateSignature("https://api.twitter.com/",getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_SECRET),sekret).toString();
 
         presenter = new HomePresenter(this, this);
 
         functionFroGetListData();
 
         //Функция для авто обновления, период 7 сек.
-
         Timer repeatTask = new Timer();
         repeatTask.scheduleAtFixedRate(new TimerTask() {
 
@@ -83,7 +91,6 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
                 });
             }
         }, 0, 60000);
-
     }
 
     @Override
@@ -94,7 +101,6 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
         adapter.notifyDataSetChanged();
         Picasso.with(this).load(String.valueOf(listTwiters.get(0).getUser().getProfile_image_url())).resize(640,640).centerCrop().into(avatar);
         name.setText(listTwiters.get(0).getUser().getName());
-
     }
 
     @Override
@@ -139,4 +145,32 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
 //        }
 //        return base64EncodedString;
 //    }
+
+    public static String getHash(){
+        byte[] bytes = "mobileId:secret".getBytes(StandardCharsets.UTF_8);
+        return Base64.encodeToString(bytes,2);
+    }
+
+    private byte[] generateSignature(String signatueBaseStr, String oAuthConsumerSecret, String oAuthTokenSecret) {
+        byte[] byteHMAC = null;
+        try {
+            Mac mac = Mac.getInstance("HmacSHA1");
+            SecretKeySpec spec;
+            if (null == oAuthTokenSecret) {
+                String signingKey = encode(oAuthConsumerSecret) + '&';
+                spec = new SecretKeySpec(signingKey.getBytes(), "HmacSHA1");
+            } else {
+                String signingKey = encode(oAuthConsumerSecret) + '&' + encode(oAuthTokenSecret);
+                spec = new SecretKeySpec(signingKey.getBytes(), "HmacSHA1");
+            }
+            mac.init(spec);
+            byteHMAC = mac.doFinal(signatueBaseStr.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Base64.decode(byteHMAC,2);
+    }
+
+
+
 }

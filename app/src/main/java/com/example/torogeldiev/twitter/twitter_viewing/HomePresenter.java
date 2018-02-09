@@ -49,7 +49,7 @@ public class HomePresenter {
                 if(response.isSuccessful()){
                     homeView.sendTwitter(response.body());
                 }else{
-                    homeView.getErrorBody("Извените разоаботчики Twitter не дают доступ постить");
+                    homeView.getErrorBody("");
                 }
             }
 
