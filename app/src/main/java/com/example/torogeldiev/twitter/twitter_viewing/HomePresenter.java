@@ -43,19 +43,19 @@ public class HomePresenter {
         });
     }
     void sendMessage(String authorization, String textTweet){
-        App.getGetListTwiter().postNewTwitter(authorization, textTweet).enqueue(new Callback<List<GetListTwiter>>() {
+        App.getGetListTwiter().postNewTwitter(authorization, textTweet).enqueue(new Callback<GetListTwiter>() {
             @Override
-            public void onResponse(Call<List<GetListTwiter>> call, Response<List<GetListTwiter>> response) {
+            public void onResponse(Call<GetListTwiter> call, Response<GetListTwiter> response) {
                 if(response.isSuccessful()){
-                    homeView.getListTwitter(response.body());
+                    homeView.sendTwitter(response.body());
                 }else{
-                    homeView.getErrorBody(response.errorBody().toString());
+                    homeView.getErrorBody("Извените разоаботчики Twitter не дают доступ постить");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<GetListTwiter>> call, Throwable t) {
-                Log.e("ERROR FAILURE: ", t.getMessage());
+            public void onFailure(Call<GetListTwiter> call, Throwable t) {
+
             }
         });
     }

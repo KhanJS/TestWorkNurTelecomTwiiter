@@ -20,5 +20,5 @@ public interface GetListsList {
     Call<List<GetListTwiter>> getListTwitter(@Header("Authorization") String authorization, @Query("user_id") long idUser);
 
     @POST("1.1/statuses/update.json")
-    Call<List<GetListTwiter>> postNewTwitter(@Header("Authorization") String authorization, @Query("status") String textForTweet);
+    Call<GetListTwiter> postNewTwitter(@Header("Authorization") String authorization, @Query("status") String textForTweet);
 }

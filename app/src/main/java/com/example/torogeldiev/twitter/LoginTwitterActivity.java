@@ -23,6 +23,8 @@ public class LoginTwitterActivity extends AppCompatActivity {
     TwitterLoginButton loginButton;
     private TwitterAuthClient mTwitterAuthClient;
     private long userName;
+    private String token;
+    private String secret;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +54,12 @@ public class LoginTwitterActivity extends AppCompatActivity {
 
         userName = session.getUserId();
 
+        token = session.getAuthToken().token;
+        secret = session.getAuthToken().secret;
         Intent intent = new Intent(LoginTwitterActivity.this, Home.class);
         intent.putExtra("userNameFromAuth", userName);
+        intent.putExtra("userToken",token);
+        intent.putExtra("userTokenSekret", secret);
         startActivity(intent);
     }
 

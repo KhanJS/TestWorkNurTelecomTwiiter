@@ -1,7 +1,6 @@
 package com.example.torogeldiev.twitter.twitter_viewing;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +15,7 @@ import com.example.torogeldiev.twitter.adapter.RecyclerAdapter;
 import com.example.torogeldiev.twitter.model.GetListTwiter;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,15 +39,19 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private long idUser;
+    private String token;
+    private String sekret;
     private HomePresenter presenter;
     private RecyclerAdapter adapter;
-    String authorization = "OAuth oauth_consumer_key=\"Q3MVyWlEoRY6FTfMr1Wa4je8n\", oauth_token=\"961630064285798400-9r4tvC9o6W7AvjHaP3ofZHVshSepeQ5\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1518110055\", oauth_nonce=\"Cp9UlCCLkHq\", oauth_version=\"1.0\", oauth_signature=\"pUAaDhDiRyJ7oaMfgSY2l9mfWJU%3D\"";
-
+    String authorization = "OAuth oauth_consumer_key=\"W7bD0tZnCjffMetkVe5M5dH4C\", oauth_token=\"961630064285798400-XrRDXLxftchx1QvXSmvobNjfD4d4NyL\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1518164753\", oauth_nonce=\"5eCW3lTkCSD\", oauth_version=\"1.0\", oauth_signature=\"Yga%2BXT%2B698BUW%2Fuh7rxXWkV6GGA%3D\"";
+//    String authorization;
+    String a = "OAuth oauth_consumer_key=\"W7bD0tZnCjffMetkVe5M5dH4C\", oauth_token=\"961630064285798400-XrRDXLxftchx1QvXSmvobNjfD4d4NyL\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1518166829\", oauth_nonce=\"IeXSOiownXT\", oauth_version=\"1.0\", oauth_signature=\"T%2FcqyzTXOXlhivzYK%2F3VtLThiZk%3D\"";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        int authSeconds = (int)(new Date().getTime()/1000);
         mSwipeRefreshLayout = findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
@@ -56,6 +59,11 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
         recyclerView.setLayoutManager(layoutManager);
 
         idUser = getIntent().getLongExtra("userNameFromAuth", idUser);
+        token = getIntent().getExtras().getString("userToken");
+        sekret = getIntent().getExtras().getString("userTokenSekret");
+
+
+//        authorization = "OAuth oauth_consumer_key="+getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY)+", oauth_token="+ token +", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp="+authSeconds+"oauth_nonce=\"5eCW3lTkCSD\"";
 
         presenter = new HomePresenter(this, this);
 
@@ -63,19 +71,19 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
 
         //Функция для авто обновления, период 7 сек.
 
-        Timer repeatTask = new Timer();
-        repeatTask.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        functionFroGetListData();
-                    }
-                });
-            }
-        }, 0, 5000);
+//        Timer repeatTask = new Timer();
+//        repeatTask.scheduleAtFixedRate(new TimerTask() {
+//
+//            @Override
+//            public void run() {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        functionFroGetListData();
+//                    }
+//                });
+//            }
+//        }, 0, 5000);
 
     }
 
@@ -91,6 +99,11 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
     }
 
     @Override
+    public void sendTwitter(GetListTwiter twitters) {
+
+    }
+
+    @Override
     public void getErrorBody(String errorToast) {
         mSwipeRefreshLayout.setRefreshing(false);
         Toast.makeText(this, errorToast, Toast.LENGTH_SHORT).show();
@@ -100,7 +113,7 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
     void send() {
         if (!text.getText().equals("") && text.getText() != null) {
             String texts = text.getText().toString();
-            presenter.sendMessage(authorization, texts);
+            presenter.sendMessage(a, texts);
         } else {
             Toast.makeText(this, "Поле для твита пустое!", Toast.LENGTH_SHORT).show();
         }
