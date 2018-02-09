@@ -42,6 +42,8 @@ public class HomePresenter {
             }
         });
     }
+
+    //Данная функция не используется
     void sendMessage(String authorization, String textTweet){
         App.getGetListTwiter().postNewTwitter(authorization, textTweet).enqueue(new Callback<GetListTwiter>() {
             @Override
@@ -49,13 +51,13 @@ public class HomePresenter {
                 if(response.isSuccessful()){
                     homeView.sendTwitter(response.body());
                 }else{
-                    homeView.getErrorBody("");
+                    homeView.getErrorBody("Error");
                 }
             }
 
             @Override
             public void onFailure(Call<GetListTwiter> call, Throwable t) {
-
+                Log.e("ERROR", t.getMessage());
             }
         });
     }

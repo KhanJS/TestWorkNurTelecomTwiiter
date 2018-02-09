@@ -5,8 +5,6 @@ import com.example.torogeldiev.twitter.model.GetListTwiter;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -20,7 +18,8 @@ public interface GetListsList {
 
     @GET("1.1/statuses/user_timeline.json")
     Call<List<GetListTwiter>> getListTwitter(@Header("Authorization") String authorization, @Query("user_id") long idUser);
-    @FormUrlEncoded
+
+    //Запрос не используется
     @POST("1.1/statuses/update.json")
-    Call<GetListTwiter> postNewTwitter(@Header("Authorization") String authorization, @Field("status") String textForTweet);
+    Call<GetListTwiter> postNewTwitter(@Header("Authorization") String authorization, @Query("status") String textForTweet);
 }

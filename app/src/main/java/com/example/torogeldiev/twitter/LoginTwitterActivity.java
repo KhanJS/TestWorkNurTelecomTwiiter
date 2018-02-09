@@ -48,6 +48,8 @@ public class LoginTwitterActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     private void login(TwitterSession session) {

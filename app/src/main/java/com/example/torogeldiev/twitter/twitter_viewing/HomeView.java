@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface HomeView {
     void getListTwitter(List<GetListTwiter> listTwiters);
-    void sendTwitter(GetListTwiter twitters);
+    void sendTwitter(GetListTwiter getListTwiter);
     void getErrorBody(String errorToast);
 }
