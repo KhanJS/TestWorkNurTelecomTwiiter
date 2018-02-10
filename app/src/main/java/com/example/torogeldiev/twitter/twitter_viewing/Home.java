@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,7 +76,7 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
 
         authorization = "OAuth oauth_consumer_key=\"" + getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY)
                 + "\", oauth_token=\"" + token +
-                "\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1518164753\", oauth_nonce=\"5eCW3lTkCSD\", oauth_version=\"1.0\", oauth_signature=\"Yga%2BXT%2B698BUW%2Fuh7rxXWkV6GGA%3D\"";
+                "\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1518296442\", oauth_nonce=\"x4rn0h86SBw\", oauth_version=\"1.0\", oauth_signature=\"nleSIESQWH5MB4TB1EWQWPqyOxo%3D\"";
 
         presenter = new HomePresenter(this, this);
 
