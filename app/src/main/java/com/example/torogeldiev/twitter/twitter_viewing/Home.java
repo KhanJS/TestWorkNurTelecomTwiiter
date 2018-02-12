@@ -76,7 +76,7 @@ public class Home extends AppCompatActivity implements HomeView, SwipeRefreshLay
 
         authorization = "OAuth oauth_consumer_key=\"" + getResources().getString(R.string.com_twitter_sdk_android_CONSUMER_KEY)
                 + "\", oauth_token=\"" + token +
-                "\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1518296442\", oauth_nonce=\"x4rn0h86SBw\", oauth_version=\"1.0\", oauth_signature=\"nleSIESQWH5MB4TB1EWQWPqyOxo%3D\"";
+                "\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1518414354\", oauth_nonce=\"olTSOO42LRd\", oauth_version=\"1.0\", oauth_signature=\"TQPxJre4iAotYUTf21ZT38PvkiI%3D\"";
 
         presenter = new HomePresenter(this, this);
 
